@@ -49,7 +49,7 @@ abstract class EventsByInfrequentTagTest(config: String) extends QueryTestSpec(c
               Seq(notOften)
             } else Seq.empty
             val tags = Seq(often) ++ additional
-            (actor1 ? withTags(1, tags: _*)).futureValue
+            (actor1 ? withTags(1, tags*)).futureValue
           }
 
           eventually {

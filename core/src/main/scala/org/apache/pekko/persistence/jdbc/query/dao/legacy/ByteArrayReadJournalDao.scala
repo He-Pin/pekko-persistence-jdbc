@@ -170,5 +170,6 @@ class ByteArrayReadJournalDao(
     extends BaseByteArrayReadJournalDao
     with OracleReadJournalDao {
   val queries = new ReadJournalQueries(profile, readJournalConfig)
-  val serializer = new ByteArrayJournalSerializer(serialization, readJournalConfig.pluginConfig.tagSeparator)
+  val serializer: FlowPersistentReprSerializer[JournalRow] =
+    new ByteArrayJournalSerializer(serialization, readJournalConfig.pluginConfig.tagSeparator)
 }

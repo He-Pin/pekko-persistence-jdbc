@@ -38,7 +38,8 @@ class ByteArrayJournalDao(
     serialization: Serialization)(implicit val ec: ExecutionContext, val mat: Materializer)
     extends BaseByteArrayJournalDao {
   val queries = new JournalQueries(profile, journalConfig.journalTableConfiguration)
-  val serializer = new ByteArrayJournalSerializer(serialization, journalConfig.pluginConfig.tagSeparator)
+  val serializer: FlowPersistentReprSerializer[JournalRow] =
+    new ByteArrayJournalSerializer(serialization, journalConfig.pluginConfig.tagSeparator)
 }
 
 /**

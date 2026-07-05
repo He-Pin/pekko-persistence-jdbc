@@ -324,7 +324,7 @@ abstract class QueryTestSpec(config: String, configOverrides: Map[String, Config
     try {
       expectAllStarted(refs)
       f(refs.head, refs.drop(1).head, refs.drop(2).head)
-    } finally killActors(refs: _*)
+    } finally killActors(refs*)
   }
 
   def withManyTestActors(amount: Int, seq: Int = 1, replyToMessages: Boolean = false)(f: Seq[ActorRef] => Unit)(
@@ -333,7 +333,7 @@ abstract class QueryTestSpec(config: String, configOverrides: Map[String, Config
     try {
       expectAllStarted(refs)
       f(refs)
-    } finally killActors(refs: _*)
+    } finally killActors(refs*)
   }
 
   def expectAllStarted(refs: Seq[ActorRef])(implicit system: ActorSystem): Unit = {
@@ -343,7 +343,7 @@ abstract class QueryTestSpec(config: String, configOverrides: Map[String, Config
     Future.sequence(refs.map(_ ? "state")).futureValue
   }
 
-  def withTags(payload: Any, tags: String*) = Tagged(payload, Set(tags: _*))
+  def withTags(payload: Any, tags: String*) = Tagged(payload, Set(tags*))
 
   def withDao(f: JournalDao => Unit)(implicit system: ActorSystem, ec: ExecutionContext, mat: Materializer): Unit = {
     val fqcn: String = journalConfig.pluginConfig.dao

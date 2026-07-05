@@ -49,6 +49,12 @@ object ProjectAutoPlugin extends AutoPlugin {
       "-language:higherKinds",
       "-language:implicitConversions",
       "-release:17"),
+    scalacOptions ++= {
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, 13)) => Seq("-Xsource:3")
+        case _             => Seq.empty
+      }
+    },
     Compile / scalacOptions ++=
       (CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, _)) =>
@@ -60,7 +66,7 @@ object ProjectAutoPlugin extends AutoPlugin {
             "-Wconf:msg=The trailing ` _` for eta-expansion is unnecessary:s",
             "-Wconf:msg=with as a type operator has been deprecated:s",
             "-Wconf:msg=Unreachable case except for null:s") ++
-          (if (CrossVersion.partialVersion(scalaVersion.value).exists(_._2 < 9))
+          (if (scalaVersion.value.startsWith("3.3."))
              Seq("-Yfuture-lazy-vals", "-Wconf:msg=bad option.*-Yfuture-lazy-vals:s")
            else Seq.empty)
         case _ =>
